@@ -1,0 +1,13 @@
+port: 7880
+
+rtc:
+  udp_port: 17882
+  tcp_port: 17881
+  node_ip: YOUR_PC_LAN_IP
+  use_ice_lite: true
+
+keys:
+  devkey: secret
+
+logging:
+  level: info
