@@ -1,54 +1,14 @@
-# WebRTC/SFU experimental version
+# WebRTC/SFU
 
-This directory is independent from the legacy Python sender and viewer.
-The legacy commands remain unchanged:
+A documentação principal do projeto está em [`../README.md`](../README.md).
 
-```powershell
-python ..\screenshot_audioopus_sender.py
-python ..\screenshot_audioopus_viewer.py
-```
+Esta pasta contém a implementação atual:
 
-## Current pieces
+- `src/`: aplicação React, viewer e publicador pelo navegador.
+- `server.mjs`: API Express para health check e emissão de tokens.
+- `publisher.py`: publicador Python de tela e áudio do sistema.
+- `docker-compose.yml` e `livekit.yaml`: LiveKit local.
+- `vite.config.js`: servidor de desenvolvimento e proxy da API.
 
-- `docker-compose.yml`: local LiveKit SFU.
-- `server.mjs`: Node token/health server.
-- `src/`: React browser viewer.
-- `publisher.py`: Python LiveKit publisher for screen and system audio.
-- `src/main.jsx`: viewer and browser-based publisher modes.
-- `video_sender.py` and `audio_sender.py` in the parent directory remain legacy modules and are not imported here.
-
-The React app can watch a stream or publish from the browser. The browser publisher
-uses the native `getDisplayMedia` capture flow and asks the user to choose a screen,
-window, or tab. `publisher.py` remains available when Python capture is preferred.
-
-## Local start
-
-From this directory:
-
-```powershell
-Copy-Item .env.example .env
-docker compose up -d
-npm run dev
-
-python publisher.py  # optional: use the Python publisher instead of the browser
-```
-
-Install the publisher dependencies once:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-The publisher defaults to 1280x720 at 15 FPS to reduce CPU and RAM use. You can
-override these values with `LIVEKIT_VIDEO_MAX_WIDTH`, `LIVEKIT_VIDEO_MAX_HEIGHT`
-and `LIVEKIT_VIDEO_FPS`.
-
-Open `http://localhost:5173` on the PC. For a phone on the same Wi-Fi, set `LIVEKIT_URL` in `.env` to the PC's LAN address, for example:
-
-```text
-LIVEKIT_URL=ws://YOUR_PC_LAN_IP:7880
-```
-
-Then open `http://YOUR_PC_LAN_IP:5173` on the phone and allow TCP `5173`, TCP `17880`, TCP `17881`, and UDP `17882` through the PC firewall as needed. Update `livekit.yaml` when the host LAN IP changes.
-
-This local setup uses LiveKit development credentials only. It is not an internet-facing deployment and does not yet include user authentication.
+Consulte o README da raiz para requisitos, arquitetura, configuração, comandos de
+execução e limitações conhecidas.
