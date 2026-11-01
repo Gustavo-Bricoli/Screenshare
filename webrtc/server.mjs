@@ -5,7 +5,7 @@ import { AccessToken } from "livekit-server-sdk";
 
 const app = express();
 const port = Number(process.env.PORT || 8787);
-const livekitUrl = process.env.LIVEKIT_URL || "ws://localhost:7880";
+const livekitUrl = process.env.LIVEKIT_URL || "ws://localhost:17880";
 const apiKey = process.env.LIVEKIT_API_KEY || "devkey";
 const apiSecret = process.env.LIVEKIT_API_SECRET || "secret";
 

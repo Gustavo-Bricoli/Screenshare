@@ -97,7 +97,9 @@ endpoint de health check; o tráfego multimídia passa pelo LiveKit.
 │   ├── src/styles.css     # Estilos da aplicação
 │   ├── server.mjs         # API Express para tokens e health check
 │   ├── publisher.py       # Publicador Python de tela e áudio
-│   ├── docker-compose.yml # LiveKit local
+│   ├── docker-compose.yml # Frontend, API, LiveKit e publisher
+│   ├── Dockerfile         # Imagem Node para frontend e API
+│   ├── Dockerfile.publisher # Imagem do publicador Python
 │   ├── livekit.yaml       # Configuração do servidor LiveKit
 │   ├── vite.config.js     # Dev server e proxy da API
 │   ├── package.json       # Dependências e scripts JavaScript
@@ -114,24 +116,16 @@ registram versões anteriores e experimentos do projeto.
 ## Requisitos
 
 - Windows, Linux ou macOS para o desenvolvimento local.
-- Node.js 18 ou superior.
-- npm.
-- Python 3.10 ou superior para usar o publicador Python.
 - Docker Desktop com Docker Compose.
 - Uma rede local acessível pelos dispositivos que atuarão como viewers.
 
+Node.js/npm só são necessários para executar a aplicação fora do Docker. Python
+3.10 ou superior só é necessário para executar o publicador Python diretamente no
+Windows.
+
 ## Como executar
 
-### 1. Instalar dependências JavaScript
-
-No diretório `webrtc`:
-
-```powershell
-cd webrtc
-npm install
-```
-
-### 2. Configurar variáveis de ambiente
+### 1. Configurar variáveis de ambiente
 
 Crie o arquivo local a partir do exemplo:
 
@@ -151,17 +145,25 @@ PORT=8787
 Substitua `YOUR_PC_LAN_IP` pelo endereço IP do computador que está executando o
 LiveKit. O arquivo `.env` é local e não deve ser versionado.
 
-### 3. Iniciar o LiveKit
+### 2. Iniciar todos os serviços
+
+No diretório `webrtc`, o Compose inicia o frontend, a API de tokens e o LiveKit:
 
 ```powershell
-docker compose up -d
+docker compose up --build -d
+```
+
+Para acompanhar os logs:
+
+```powershell
+docker compose logs -f frontend api livekit
 ```
 
 O Compose publica as seguintes portas:
 
 | Porta | Protocolo | Uso |
 |---|---|---|
-| `5173` | TCP | Interface web do Vite |
+| `5173` | TCP | Interface web do Vite (container `frontend`) |
 | `8787` | TCP | API Node de tokens |
 | `17880` | TCP | LiveKit/WebSocket |
 | `17881` | TCP | LiveKit RTC |
@@ -169,14 +171,6 @@ O Compose publica as seguintes portas:
 
 Se o endereço IP da máquina mudar, atualize o `node_ip` em `livekit.yaml` e o
 `LIVEKIT_URL` em `.env`.
-
-### 4. Iniciar a aplicação
-
-Em outro terminal, ainda dentro de `webrtc`:
-
-```powershell
-npm run dev
-```
 
 Abra `http://localhost:5173` no computador. Para acessar de um celular na mesma
 rede, abra `http://IP_DO_COMPUTADOR:5173` e libere no firewall as portas
@@ -188,7 +182,7 @@ O endpoint de verificação fica disponível em:
 http://localhost:8787/api/health
 ```
 
-### 5. Escolher o modo de uso
+### 3. Escolher o modo de uso
 
 Na interface, escolha uma das opções:
 
@@ -198,16 +192,10 @@ Na interface, escolha uma das opções:
 - **Use Python publisher**: mantém a página aberta e usa o processo Python para
   publicar a tela e o áudio do sistema.
 
-Para instalar as dependências do publicador Python:
+O publicador Python pode ser iniciado pelo Compose:
 
 ```powershell
-python -m pip install -r requirements.txt
-```
-
-Depois, execute:
-
-```powershell
-python publisher.py
+docker compose --profile python-publisher up --build -d
 ```
 
 O publicador Python usa por padrão a sala `screen-share`, a identidade
@@ -215,6 +203,16 @@ O publicador Python usa por padrão a sala `screen-share`, a identidade
 ser ajustados por variáveis como `LIVEKIT_ROOM`, `LIVEKIT_IDENTITY`,
 `LIVEKIT_VIDEO_FPS`, `LIVEKIT_MONITOR`, `LIVEKIT_VIDEO_MAX_WIDTH` e
 `LIVEKIT_VIDEO_MAX_HEIGHT`.
+
+O profile Python é opcional. O `mss` e o `soundcard` precisam acessar a tela e o
+áudio do sistema; no Docker Desktop para Windows esses dispositivos não são
+compartilhados automaticamente com containers Linux. Se a captura não estiver
+disponível, use **Publish from browser** ou execute o publicador diretamente no
+Windows. Para parar todos os serviços:
+
+```powershell
+docker compose down
+```
 
 ## Segurança e escopo atual
 
