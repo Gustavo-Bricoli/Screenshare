@@ -24,27 +24,41 @@ redes, frontend e backend.
 ## Demonstração
 
 A página inicial dá três opcões ao usuário. Assistir alguma transmissão já existente, transmitir sua tela pelo navegador ou transmitir sua tela usando script de python.
+
 ![Página inicial](docs/MainPage.png)
+
 ![Transmissão pelo script python](docs/PublishPython.png)
+
 ![Watcher sem nenhuma transmissão ativa](docs/TransmissaoSemSender.png)
 
 Quando se quer transmitir sua tela, é só mudar o nome e apertar no botão.
+
 ![Exemplo](docs/MainPageSender.png)
 
-Alguma opções do que transmitir irão aparecer. Uma guia específica do navegador,  
+Alguma opções do que transmitir irão aparecer. Uma guia específica do navegador,
+
 ![Guia do navegador](docs/SenderOpcao1.png)
+
 uma janela ativa do computador
+
 ![Janela](docs/senderopcao2.png)
+
 ou uma tela inteira.
+
 ![Tela inteira](docs/senderopcao3.png)
+
 Você também tem a opcão de escolher se quer transmitir com ou sem áudio.
+
 ![Transmissão com áudio marcada](docs/senderopcao3marcada.png)
 
 Depois de escolhido, você estará transmitindo sua tela em uma sala.
+
 ![Transmissão ativa](docs/TransmissaoAtiva.png)
 
 É possível assistir a transmissão pelo celular também.
+
 ![Página inicial pelo celular](docs/MainPageCelular.png)
+
 ![Assistindo a transmissão pelo celular](docs/AssistindoCelular.png)
 
 ## Tecnologias utilizadas
