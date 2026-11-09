@@ -9,6 +9,10 @@ outros dispositivos acompanhem a transmissão pelo navegador. O foco atual é um
 solução local, simples de executar e adequada para demonstração de conceitos de
 redes, frontend e backend.
 
+Cada nome de sala representa uma sala LiveKit independente. Um publicador em
+`sala-x` só será visto por viewers conectados a `sala-x`; viewers em `sala-y`
+ficam em outra sala e não recebem essa transmissão.
+
 ## Funcionalidades
 
 - Transmissão de tela em tempo real via LiveKit/WebRTC.
@@ -134,6 +138,7 @@ endpoint de health check; o tráfego multimídia passa pelo LiveKit.
 .
 ├── webrtc/
 │   ├── src/main.jsx       # Interface React, viewer e publisher do navegador
+│   ├── src/screens/       # Telas de entrada, viewer e publicação
 │   ├── src/styles.css     # Estilos da aplicação
 │   ├── server.mjs         # API Express para tokens e health check
 │   ├── publisher.py       # Publicador Python de tela e áudio
@@ -152,6 +157,18 @@ endpoint de health check; o tráfego multimídia passa pelo LiveKit.
 
 A pasta `webrtc` contém a implementação recomendada atualmente. As demais pastas
 registram versões anteriores e experimentos do projeto.
+
+### Rotas da interface
+
+A interface usa rotas reais no navegador:
+
+- `/main`: tela inicial e seleção do modo.
+- `/viewer`: viewer conectado à sala.
+- `/publisher`: publicador de tela pelo navegador.
+- `/python-publisher`: instruções para o publicador Python.
+
+As rotas usam o histórico do navegador, então os botões voltar e avançar do
+navegador funcionam sem encerrar o site abruptamente.
 
 ## Requisitos
 
