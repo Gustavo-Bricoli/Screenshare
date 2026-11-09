@@ -21,6 +21,32 @@ redes, frontend e backend.
 - Visualização em tela cheia.
 - Servidor HTTP para emitir tokens temporários de acesso à sala.
 
+## Demonstração
+
+A página inicial dá três opcões ao usuário. Assistir alguma transmissão já existente, transmitir sua tela pelo navegador ou transmitir sua tela usando script de python.
+![Página inicial](docs/MainPage.png)
+![Transmissão pelo script python](docs/PublishPython.png)
+![Watcher sem nenhuma transmissão ativa](docs/TransmissaoSemSender.png)
+
+Quando se quer transmitir sua tela, é só mudar o nome e apertar no botão.
+![Exemplo](docs/MainPageSender.png)
+
+Alguma opções do que transmitir irão aparecer. Uma guia específica do navegador,  
+![Guia do navegador](docs/SenderOpcao1.png)
+uma janela ativa do computador
+![Janela](docs/senderopcao2.png)
+ou uma tela inteira.
+![Tela inteira](docs/senderopcao3.png)
+Você também tem a opcão de escolher se quer transmitir com ou sem áudio.
+![Transmissão com áudio marcada](docs/senderopcao3marcada.png)
+
+Depois de escolhido, você estará transmitindo sua tela em uma sala.
+![Transmissão ativa](docs/TransmissaoAtiva.png)
+
+É possível assistir a transmissão pelo celular também.
+![Página inicial pelo celular](docs/MainPageCelular.png)
+![Assistindo a transmissão pelo celular](docs/AssistindoCelular.png)
+
 ## Tecnologias utilizadas
 
 ### Frontend
@@ -172,10 +198,6 @@ O Compose publica as seguintes portas:
 Se o endereço IP da máquina mudar, atualize o `node_ip` em `livekit.yaml` e o
 `LIVEKIT_URL` em `.env`.
 
-Abra `http://localhost:5173` no computador. Para acessar de um celular na mesma
-rede, abra `http://IP_DO_COMPUTADOR:5173` e libere no firewall as portas
-necessárias.
-
 O endpoint de verificação fica disponível em:
 
 ```text
@@ -234,6 +256,9 @@ reais dentro do código-fonte.
   navegador depende da API `getDisplayMedia`. O funcionamento é garantido
   principalmente no Google Chrome e no Microsoft Edge. Outros navegadores podem
   apresentar limitações de permissão, captura ou compatibilidade.
+- **Captura remota pelo navegador:** o publicador precisa estar em HTTPS ou em
+  `localhost`; liberar portas no firewall não substitui essa exigência de
+  segurança do navegador.
 - **Celulares são viewers:** a interface móvel foi pensada para assistir à
   transmissão. Celulares não publicam a própria tela neste projeto; não há suporte
   implementado para capturar e transmitir a tela de dispositivos móveis.
